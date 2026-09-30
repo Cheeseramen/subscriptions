@@ -1,0 +1,47 @@
+name: keepalive
+
+# 무료 Supabase 프로젝트가 일주일 무접속으로 일시정지되는 것을 막기 위해 매일 한 번 서버에 요청을 보낸다.
+# 서버가 멈췄거나 응답이 이상하면 이 작업이 실패하고, GitHub가 저장소 주인에게 실패 메일을 보낸다.
+on:
+  schedule:
+    - cron: '17 3 * * *' # 매일 03:17 UTC (한국 시간 12:17)
+  workflow_dispatch:
+    inputs:
+      force_commit:
+        description: '저장소 활동 유지 커밋을 지금 강제로 만들어 테스트'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 서버 깨우기
+        run: |
+          # 존재하지 않는 이름으로 조회 요청만 보낸다 (데이터를 만들거나 바꾸지 않음). 키는 앱에 이미 공개된 값이다.
+          code=$(curl -sS -o /tmp/res.json -w '%{http_code}' --retry 3 --retry-delay 15 --retry-all-errors --max-time 30 \
+            -X POST 'https://jlqtprtvfrdignmmoxwt.supabase.co/rest/v1/rpc/ws_pull' \
+            -H 'apikey: sb_publishable_vzkEa7OnhV6-vhCxC79LKg_rNLshd19' \
+            -H 'Content-Type: application/json' \
+            -d '{"p_name":"__keepalive__","p_secret":"0000000000000000000000000000000000000000000000000000000000000000"}')
+          echo "HTTP $code"; cat /tmp/res.json; echo
+          test "$code" = "200"
+          grep -q '"bad_credentials"' /tmp/res.json
+
+      - name: 저장소 활동 유지
+        # 공개 저장소는 60일간 활동이 없으면 예약 작업이 자동으로 꺼지므로, 40일 넘게 커밋이 없으면 빈 커밋을 남긴다.
+        run: |
+          last=$(git log -1 --format=%ct)
+          days=$(( ( $(date +%s) - last ) / 86400 ))
+          echo "마지막 커밋 후 ${days}일"
+          if [ "$days" -ge 40 ] || [ "${{ inputs.force_commit }}" = "true" ]; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit --allow-empty -m 'chore: 예약 작업 유지용 빈 커밋'
+            git push
+          fi
