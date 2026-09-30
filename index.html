@@ -116,17 +116,6 @@ button.cell:hover{background:var(--soft)}
 .note b{color:var(--ink);font-weight:600}
 
 /* upcoming */
-.sec-head{display:flex;align-items:center;gap:12px;margin:40px 0 8px;flex-wrap:wrap}
-.sec-head h2{font-size:16px;margin:0;font-weight:700}
-.sec-head span{color:var(--muted);font-size:14px}
-.sec-head .btn{margin-left:auto}
-.ulist{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-strong)}
-.ulist li{display:grid;grid-template-columns:88px 52px minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:9px 4px;border-bottom:1px solid var(--line)}
-.ulist .due{color:var(--muted);font-size:13px}
-.ulist .due.soon{color:var(--warn);font-weight:600}
-.ulist .un{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ulist .uv{font-weight:600}
-.ulist .more{display:block;color:var(--muted);font-size:14px;border-bottom:0}
 
 /* categories */
 .catbar{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px;margin-top:36px;background:var(--soft)}
@@ -217,7 +206,6 @@ details.more-fields .inner{display:grid;gap:16px}
   .row{grid-template-columns:40px minmax(0,1fr) auto;gap:12px}
   .row .next{grid-column:2;grid-row:2;flex-direction:row;gap:8px;align-items:baseline}
   .row .amt{grid-column:3;grid-row:1 / span 2}
-  .ulist li{grid-template-columns:72px 44px minmax(0,1fr) auto;gap:8px}
   .cell{min-height:52px;padding:4px;gap:2px}
   .cell .evs{flex-direction:row;flex-wrap:wrap;gap:3px}
   .cell .ev .t{display:none}
@@ -747,18 +735,12 @@ function render(){
   const cancelled = state.subs.filter(s => s.status === 'cancelled' && s.cancelledOn <= iso(today));
   const saved = cancelled.reduce((a,s) => a + perMonth(s), 0);
 
-  // 앞으로 30일
-  const up = [];
-  state.subs.forEach(s => chargesOf(s, today, addDays(today, 30)).forEach(d => up.push({s, d, v: krwAt(s, d)})));
-  up.sort((a,b) => a.d - b.d || a.s.name.localeCompare(b.s.name, 'ko'));
-  const upTotal = up.reduce((a,c) => a + c.v, 0);
-  const soon = up.filter(c => c.d <= addDays(today, 3));
+  // 일주일 안에 결제되는 구독
+  const soon = [];
+  state.subs.forEach(s => chargesOf(s, today, addDays(today, 7)).forEach(d => soon.push({s, d, v: krwAt(s, d)})));
+  soon.sort((a,b) => a.d - b.d || a.s.name.localeCompare(b.s.name, 'ko'));
   const dueBanner = soon.length ? `<div class="banner" role="status"><b>곧 결제</b>
       <span class="items">${soon.map(c => `<span>${dueText(c.d).t} ${esc(c.s.name)} ${won(c.v)}</span>`).join('')}</span></div>` : '';
-  const upRows = up.slice(0, 8).map(c => {
-    const due = dueText(c.d);
-    return `<li><span>${fmtDate(c.d)}</span><span class="due ${due.soon ? 'soon' : ''}">${due.t}</span><span class="un">${esc(c.s.name)}</span><span class="uv">${won(c.v)}</span></li>`;
-  }).join('') + (up.length > 8 ? `<li class="more">외 ${up.length - 8}건</li>` : '');
 
   // 일별 결제 (막대 / 달력)
   const byDay = {};
@@ -851,8 +833,6 @@ function render(){
       ${daysView}
       ${note}
     </section>
-    ${up.length ? `<div class="sec-head"><h2>앞으로 30일</h2><span>${won(upTotal)}</span><button class="btn sm" data-act="ics">캘린더로 내보내기</button></div>
-    <ul class="ulist">${upRows}</ul>` : ''}
     ${cats.length ? `<div class="catbar" role="img" aria-label="카테고리별 월 환산 비중">${catbar}</div><ul class="legend">${legend}</ul>` : ''}
     <div class="list-head"><h2>구독 ${state.subs.length}개</h2><div class="chips">${chips}</div></div>
     <ul class="rows">${rows}</ul>
