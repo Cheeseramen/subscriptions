@@ -13,10 +13,11 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>구독 관리</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 :root{
-  --bg:#F2F4F3; --surface:#FFFFFF; --ink:#1B2430; --muted:#66727F; --line:#DDE2E6; --line-strong:#C6CED5;
+  --bg:#F2F4F3; --surface:#FFFFFF; --ink:#1B2430; --muted:#5A6673; --line:#DDE2E6; --line-strong:#C6CED5;
   --accent:#2B4BFF; --accent-ink:#FFFFFF; --warn:#B86E00; --danger:#C93B3B; --soft:#E9EDF0; --ok:#2E9E5B;
   --logo-bg-l:90%; --logo-fg-l:28%;
   --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;
@@ -30,7 +31,8 @@
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--font);font-feature-settings:"tnum" 1;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--font);letter-spacing:-.01em;font-variant-numeric:tabular-nums;
+  word-break:keep-all;overflow-wrap:break-word;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
@@ -40,7 +42,7 @@ button{cursor:pointer}
 /* header */
 .top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:6px;margin-right:auto}
-.top h1{font-size:18px;font-weight:700;margin:0;letter-spacing:-.01em}
+.top h1{font-size:17px;font-weight:600;line-height:1.3;margin:0;letter-spacing:-.02em}
 .sync-dot{width:24px;height:24px;background:none;border:0;padding:0;display:grid;place-items:center}
 .sync-dot::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--muted)}
 .sync-dot[data-state="ok"]::before{background:var(--ok)}
@@ -57,7 +59,7 @@ button{cursor:pointer}
 .btn.primary:hover{filter:brightness(1.06)}
 .btn.danger{color:var(--danger)}
 .btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
-.btn.sm{height:30px;padding:0 12px;font-size:14px}
+.btn.sm{height:30px;padding:0 12px;font-size:13px}
 
 /* banners */
 .banner{display:flex;gap:6px 14px;align-items:center;flex-wrap:wrap;padding:10px 14px;border-radius:10px;margin-top:20px;
@@ -71,8 +73,8 @@ button{cursor:pointer}
 /* hero */
 .hero{display:grid;grid-template-columns:1fr auto;gap:48px;margin-top:40px;align-items:end}
 .hero-label{color:var(--muted);margin:0 0 4px}
-.hero-num{font-size:clamp(44px,8vw,76px);font-weight:600;letter-spacing:-.035em;line-height:1.05;margin:0}
-.hero-num small{font-size:.42em;font-weight:500;letter-spacing:0;margin-right:4px;color:var(--muted)}
+.hero-num{font-size:clamp(44px,8vw,76px);font-weight:600;letter-spacing:-.04em;line-height:1;margin:0;font-variant-numeric:proportional-nums}
+.hero-num small{font-size:.4em;font-weight:500;letter-spacing:0;margin-right:.12em;color:var(--muted);vertical-align:.18em}
 .hero-split{display:flex;gap:28px;margin-top:14px;color:var(--muted)}
 .hero-split b{color:var(--ink);font-weight:600;margin-left:6px}
 .derived{border-left:1px solid var(--line);padding-left:32px;display:grid;gap:14px;min-width:200px}
@@ -86,7 +88,7 @@ button{cursor:pointer}
 .days{margin-top:28px}
 .days-head{display:flex;justify-content:flex-end;margin-bottom:10px}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
-.seg button{border:0;background:transparent;padding:0 14px;height:30px;color:var(--muted);font-size:14px}
+.seg button{border:0;background:transparent;padding:0 14px;height:30px;color:var(--muted);font-size:13px}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 .bars{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;height:112px;align-items:end;border-bottom:1px solid var(--line-strong)}
 .col{position:relative;height:100%;display:flex;align-items:flex-end;justify-content:center;background:none;border:0;padding:0}
@@ -97,12 +99,12 @@ button{cursor:pointer}
 button.col:hover .bar{filter:brightness(1.12)}
 .ticks{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;margin-top:6px;font-size:12px;color:var(--muted);text-align:center}
 .ticks span{white-space:nowrap;overflow:visible}
-.ticks .t-today{color:var(--accent);font-weight:700}
+.ticks .t-today{color:var(--accent);font-weight:600}
 .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--line-strong);border-left:1px solid var(--line)}
 .cal .dow{padding:6px 8px;font-size:12px;color:var(--muted);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
 .cell{min-height:96px;padding:6px 8px;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:left;background:none;display:flex;flex-direction:column;gap:4px;font-size:12px;overflow:hidden;min-width:0}
 .cell .dn{font-size:13px;color:var(--muted)}
-.cell.today .dn{color:var(--accent);font-weight:700}
+.cell.today .dn{color:var(--accent);font-weight:600}
 .cell.sel{background:var(--soft)}
 .cell.blank{background:color-mix(in srgb,var(--soft) 45%,transparent)}
 button.cell:hover{background:var(--soft)}
@@ -127,7 +129,7 @@ button.cell:hover{background:var(--soft)}
 
 /* list */
 .list-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:48px 0 8px;flex-wrap:wrap}
-.list-head h2{font-size:16px;margin:0;font-weight:700}
+.list-head h2{font-size:17px;line-height:1.3;margin:0;font-weight:600;letter-spacing:-.02em}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
 .chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:3px 12px;font-size:13px;color:var(--muted)}
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
@@ -135,7 +137,7 @@ button.cell:hover{background:var(--soft)}
 .row{display:grid;grid-template-columns:40px minmax(0,1fr) 128px 176px;gap:16px;align-items:center;padding:14px 4px;border-bottom:1px solid var(--line);cursor:pointer}
 .row:hover{background:color-mix(in srgb,var(--surface) 70%,transparent)}
 .row.dim{opacity:.5}
-.logo{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-weight:700;background:hsl(var(--h) 40% var(--logo-bg-l));color:hsl(var(--h) 45% var(--logo-fg-l))}
+.logo{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-weight:600;background:hsl(var(--h) 40% var(--logo-bg-l));color:hsl(var(--h) 45% var(--logo-fg-l))}
 .name{min-width:0}
 .name .title{background:none;border:0;padding:0;font-weight:600;text-align:left;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
 .meta{display:flex;gap:2px 10px;flex-wrap:wrap;color:var(--muted);font-size:13px;align-items:center}
@@ -146,18 +148,19 @@ button.cell:hover{background:var(--soft)}
 .next{display:flex;flex-direction:column}
 .next small{color:var(--muted);font-size:13px}
 .next small.soon{color:var(--warn);font-weight:600}
-.amt{text-align:right;font-weight:600;font-size:16px}
-.amt small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.amt{text-align:right;font-weight:600;font-size:17px;letter-spacing:-.02em}
+.amt small{display:block;font-weight:400;color:var(--muted);font-size:13px;letter-spacing:0}
+.cur{font-size:.8em;font-weight:500;margin-right:.08em;opacity:.75} /* 17px 이상의 큰 금액에만 사용 */
 
 .empty{padding:56px 0;text-align:left;color:var(--muted)}
-.empty h3{color:var(--ink);font-size:18px;margin:0 0 6px}
+.empty h3{color:var(--ink);font-size:17px;font-weight:600;line-height:1.3;margin:0 0 6px;letter-spacing:-.02em}
 .empty .actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
 
 /* dialog */
 dialog{border:1px solid var(--line);border-radius:14px;padding:0;background:var(--surface);color:var(--ink);width:min(480px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto}
 dialog::backdrop{background:rgba(10,16,24,.5)}
 dialog form{padding:24px;display:grid;gap:16px}
-dialog h2{margin:0;font-size:18px}
+dialog h2{margin:0;font-size:17px;font-weight:600;line-height:1.3;letter-spacing:-.02em}
 .field{display:grid;gap:6px}
 .field>label,.field>span{font-size:13px;color:var(--muted)}
 .field input[type=text],.field input[type=number],.field input[type=date],.field select,.field textarea{width:100%;height:40px;padding:0 12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg)}
@@ -165,7 +168,7 @@ dialog h2{margin:0;font-size:18px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .amt-row{display:grid;grid-template-columns:1fr 96px;gap:8px}
 .cyc-row{display:grid;grid-template-columns:88px 1fr;gap:8px}
-.check{display:flex;align-items:center;gap:8px;font-size:14px}
+.check{display:flex;align-items:center;gap:8px;font-size:15px}
 .check input{width:18px;height:18px;accent-color:var(--accent)}
 .dlg-actions{display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap}
 .dlg-actions .spacer{margin-right:auto}
@@ -190,11 +193,11 @@ dialog h2{margin:0;font-size:18px}
 .catdel{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .catdel select{height:32px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);padding:0 8px}
 details.more-fields{border-top:1px solid var(--line);padding-top:12px}
-details.more-fields summary{cursor:pointer;color:var(--muted);font-size:14px;margin-bottom:12px}
+details.more-fields summary{cursor:pointer;color:var(--muted);font-size:13px;margin-bottom:12px}
 details.more-fields[open] summary{margin-bottom:16px}
 details.more-fields .inner{display:grid;gap:16px}
 
-.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;max-width:calc(100vw - 32px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:10}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:15px;max-width:calc(100vw - 32px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:10}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media (max-width:760px){
@@ -202,7 +205,8 @@ details.more-fields .inner{display:grid;gap:16px}
   .hero{grid-template-columns:1fr;gap:24px;margin-top:28px}
   .derived{border-left:0;border-top:1px solid var(--line);padding:16px 0 0;grid-template-columns:1fr 1fr;min-width:0}
   .hero-split{flex-wrap:wrap;gap:6px 20px}
-  .bars{height:88px;gap:2px}.ticks{gap:2px;font-size:11px}
+  .bars{height:88px;gap:2px}.ticks{gap:2px;font-size:12px}
+  input,select,textarea{font-size:16px} /* iOS가 15px 이하 입력칸에서 화면을 확대하는 것을 막음 */
   .row{grid-template-columns:40px minmax(0,1fr) auto;gap:12px}
   .row .next{grid-column:2;grid-row:2;flex-direction:row;gap:8px;align-items:baseline}
   .row .amt{grid-column:3;grid-row:1 / span 2}
@@ -565,6 +569,8 @@ const won = n => '₩' + Math.round(n).toLocaleString('ko-KR');
 const fmtAmt = (sub, v) => sub.currency === 'USD'
   ? '$' + Number(v).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 2})
   : won(v);
+// 화면 표시용: 금액 앞의 ₩, $ 기호를 숫자보다 작고 옅게. 17px 이상의 큰 금액에만 쓴다 (작은 글자에서는 기호가 "w"처럼 읽힘). toast, aria-label 등에는 won/fmtAmt 그대로
+const curH = t => esc(t).replace(/^([₩$])/, '<span class="cur">$1</span>');
 const curEntry = sub => sub.prices[sub.prices.length - 1];
 function priceAt(sub, d){
   const ds = typeof d === 'string' ? d : iso(d);
@@ -806,7 +812,7 @@ function render(){
             ${s.status === 'paused' ? '<span class="badge">일시정지</span>' : ''}${s.status === 'cancelled' ? `<span class="badge">${fmtDate(parse(s.cancelledOn))} 해지</span>` : ''}</div>
         </div>
         <div class="next">${next ? `<span>${fmtDate(next)}</span><small class="${due.soon ? 'soon' : ''}">${due.t}</small>` : '<span>-</span>'}</div>
-        <div class="amt">${esc(fmtAmt(s, nowE.amount))}<small>${sub2 ? esc(sub2) : '&nbsp;'}</small></div>
+        <div class="amt">${curH(fmtAmt(s, nowE.amount))}<small>${sub2 ? esc(sub2) : '&nbsp;'}</small></div>
       </li>`;
     }).join('');
   if (filter !== 'all' && !state.cats.some(c => c.id === filter)) filter = 'all';
@@ -822,9 +828,9 @@ function render(){
         <div class="hero-split"><span>결제 완료<b>${won(paid)}</b></span><span>남은 결제<b>${won(total - paid)}</b></span></div>
       </div>
       <dl class="derived">
-        <div><dt>월 환산</dt><dd>${won(monthly)}</dd></div>
-        <div><dt>연 환산</dt><dd>${won(monthly*12)}</dd></div>
-        ${saved > 0 ? `<div><dt>해지로 줄인 월 지출</dt><dd>${won(saved)}</dd></div>` : ''}
+        <div><dt>월 환산</dt><dd>${curH(won(monthly))}</dd></div>
+        <div><dt>연 환산</dt><dd>${curH(won(monthly*12))}</dd></div>
+        ${saved > 0 ? `<div><dt>해지로 줄인 월 지출</dt><dd>${curH(won(saved))}</dd></div>` : ''}
       </dl>
     </section>
     <section class="days" aria-label="일별 결제">
